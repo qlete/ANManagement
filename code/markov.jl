@@ -4,8 +4,8 @@ using CPLEX
 
 # m is the length of the vector
 # n is the number of possibilities in each entry of the vector
-# vec has length m
 # each entry of vec is between 1 and n
+# This function convert the vector vec into a single integer betwen 1 and n^m
 function vect_to_ind(vec, m, n)
 	@assert (length(vec) == m)
 	vec=vec-ones(m)
@@ -15,6 +15,8 @@ end
 # m is the length of the vector
 # n is the number of possibilities in each entry of the vector
 # ind is an integer between 1 and n^m
+# This function convert the integer ind into the corresponding vector of length m
+# such that ind_to_vect(vect_to_ind(vec, m, n), m, n) = vec
 function ind_to_vect(ind, m, n)
 	ind = ind-1
 	vect = zeros(m)
@@ -25,6 +27,8 @@ function ind_to_vect(ind, m, n)
 	return vect+ones(m)
 end
 
+# Computes the values of branch and nodal electrical quantities for given injection p
+# and returns the cost associated to the unfeasibility of the voltages and currents
 function power_flow(p, r, x, I_up, Vmin, Vmax)
 	Cunfeas = 10000
 	m = Model(solver=CplexSolver())
@@ -74,9 +78,10 @@ function power_flow(p, r, x, I_up, Vmin, Vmax)
 end
 
 
-# a is an integer from 1:81 representing the action
-# k is an integer from 1:9 representing the state (demand or solar, +10%, +0%, -10%)
-# t is an integer from 1:169 representing the time step
+# a is an integer from 1:81 representing the action (+10%, +0% or -10% for each node)
+# k is an integer from 1:9 representing the state (demand or solar, +10%, +0% or -10%)
+# t is an integer from 1:169 representing the time step (one week, hourly resolution)
+# Computes the cost for a given action, stage and time step
 function cost(a, k, t, data)
 	Ccurt = 300
 	forecast_demand = data["pDemand"][t, :]
@@ -109,6 +114,8 @@ function cost(a, k, t, data)
 	tot_cost = cost_curt + cost_unfeas
 end
 
+# Computes the optimal action and the value function using the value iteration algorithm
+# data is the dictionnary given by the call matread("data_4nodes.mat")
 function markovdecision(data)
 	pDemand = data["pDemand"]
 	nb_steps = size(pDemand)[1]
@@ -133,8 +140,6 @@ function markovdecision(data)
 end
 
 data = matread("data_4nodes.mat")
-ind = vect_to_ind([2,2,2,2], 4, 3)
-println(size(data["pDemand"]))
 (V, opt_actions) = markovdecision(data)
 @show V
 @show opt_actions
