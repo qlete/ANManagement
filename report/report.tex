@@ -8,9 +8,11 @@
 
 %\usepackage[fighead,nolists,nomarkers]{endfloat}
 
+\usepackage[backend=biber]{biblatex}
+\addbibresource{./references.bib}
+
 \input{lib.tex}
 
-\bibliography{references}
 \newcommand{\figref}[1]{\textsc{Fig.~\ref{fig:#1}}}
 \newcommand{\lnorm}[1]{\ell_{#1}}
 
@@ -21,9 +23,9 @@
 \begin{document}
 \maketitle
 
-\input{report/abstract.tex}
-\input{report/introduction.tex}
-\input{report/stateart.tex}
+\input{abstract.tex}
+\input{introduction.tex}
+\input{stateart.tex}
 
 \printbibliography
 
