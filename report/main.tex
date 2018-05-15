@@ -1,0 +1,31 @@
+\documentclass[journal,10pt,english]{IEEEtran}
+
+\ifCLASSOPTIONcompsoc
+    \usepackage[caption=false, font=normalsize, labelfont=sf, textfont=sf]{subfig}
+\else
+\usepackage[caption=false, font=footnotesize]{subfig}
+\fi
+
+%\usepackage[fighead,nolists,nomarkers]{endfloat}
+
+\input{lib.tex}
+
+\bibliography{references}
+\newcommand{\figref}[1]{\textsc{Fig.~\ref{fig:#1}}}
+\newcommand{\lnorm}[1]{\ell_{#1}}
+
+\title{Reinforcement learning for active network management of DSO grid}
+\author{John \textsc{de Wasseige}, Quentin \textsc{Lété}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\input{report/abstract.tex}
+\input{report/introduction.tex}
+\input{report/stateart.tex}
+
+\printbibliography
+
+
+\end{document}

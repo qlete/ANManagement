@@ -1,0 +1,5 @@
+$pdf_mode = 1;
+$pdflatex = 'texfot lualatex -interaction=nonstopmode';
+$pdf_previewer = 'xdg-open';
+$out_dir = './build_latex';
+@default_files = ('main.tex');

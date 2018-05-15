@@ -1,0 +1,123 @@
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xspace}
+\usepackage[binary-units=true]{siunitx}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{todonotes}
+\usepackage{epstopdf}
+\usepackage{array}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{tabularx} 	% tabular with automatic line-break
+\newcolumntype{Y}{>{\centering\arraybackslash}X} % centered column
+\usepackage{amsmath}
+\usepackage{grffile} 	% better name handling with graphicx
+\usepackage{currfile} 	% provides relative file inclusion for tikzscale
+\usepackage[ruled,vlined, linesnumbered]{algorithm2e} % for algorithms
+\usepackage{comment}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{tikzscale}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usepackage[absolute,overlay]{textpos}
+
+\usepackage{biblatex}
+\usepackage{csquotes}
+\usepackage{babel}
+
+% Math symbols
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
+
+% Sets
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ren}{\R^n}
+\newcommand{\Rnn}{\R^{n \times n}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\Kn}{\K^n}
+\newcommand{\Knn}{\K^{n \times n}}
+
+\newcommand\eqdef{\triangleq}
+
+% Vectors
+\newcommand{\vct}[1]{\boldsymbol{#1}}
+\newcommand{\va}{\vct{a}}
+\newcommand{\vb}{\vct{b}}
+\newcommand{\vc}{\vct{c}}
+\newcommand{\vd}{\vct{d}}
+\newcommand{\ve}{\vct{e}}
+\newcommand{\vf}{\vct{f}}
+\newcommand{\vg}{\vct{g}}
+\newcommand{\vh}{\vct{h}}
+\newcommand{\vi}{\vct{i}}
+\newcommand{\vj}{\vct{j}}
+\newcommand{\vk}{\vct{k}}
+\newcommand{\vl}{\vct{l}}
+\newcommand{\vm}{\vct{m}}
+\newcommand{\vn}{\vct{n}}
+\newcommand{\vo}{\vct{o}}
+\newcommand{\vp}{\vct{p}}
+\newcommand{\vq}{\vct{q}}
+\newcommand{\vr}{\vct{r}}
+\newcommand{\vs}{\vct{s}}
+\newcommand{\vt}{\vct{t}}
+\newcommand{\vu}{\vct{u}}
+\newcommand{\vv}{\vct{v}}
+\newcommand{\vw}{\vct{w}}
+\newcommand{\vx}{\vct{x}}
+\newcommand{\vy}{\vct{y}}
+\newcommand{\vz}{\vct{z}}
+% Greek letter vectors
+\newcommand{\valpha}{\vct{\alpha}}
+\newcommand{\vbeta}{\vct{\beta}}
+\newcommand{\vepsilon}{\vct{\epsilon}}
+\newcommand{\vgamma}{\vct{\gamma}}
+\newcommand{\vlambda}{\vct{\lambda}}
+\newcommand{\vnu}{\vct{\nu}}
+\newcommand{\vphi}{\vct{\phi}}
+\newcommand{\vpsi}{\vct{\psi}}
+\newcommand{\vPsi}{\vct{\Psi}}
+\newcommand{\vtheta}{\vct{\theta}}
+\newcommand{\vxi}{\vct{\xi}}
+\newcommand{\vzero}{\vct{0}}
+\newcommand{\vone}{\vct{1}}
+% Matrices
+\newcommand{\mtx}[1]{\boldsymbol{#1}}
+\newcommand{\mzero}{\mtx{0}}
+\newcommand{\mA}{\mtx{A}}
+\newcommand{\mB}{\mtx{B}}
+\newcommand{\mC}{\mtx{C}}
+\newcommand{\mD}{\mtx{D}}
+\newcommand{\mE}{\mtx{E}}
+\newcommand{\mF}{\mtx{F}}
+\newcommand{\mG}{\mtx{G}}
+\newcommand{\mH}{\mtx{H}}
+\newcommand{\mI}{\mtx{I}}
+\newcommand{\mJ}{\mtx{J}}
+\newcommand{\mK}{\mtx{K}}
+\newcommand{\mL}{\mtx{L}}
+\newcommand{\mM}{\mtx{M}}
+\newcommand{\mN}{\mtx{N}}
+\newcommand{\mO}{\mtx{O}}
+\newcommand{\mP}{\mtx{P}}
+\newcommand{\mQ}{\mtx{Q}}
+\newcommand{\mR}{\mtx{R}}
+\newcommand{\mS}{\mtx{S}}
+\newcommand{\mT}{\mtx{T}}
+\newcommand{\mU}{\mtx{U}}
+\newcommand{\mV}{\mtx{V}}
+\newcommand{\mW}{\mtx{W}}
+\newcommand{\mX}{\mtx{X}}
+\newcommand{\mY}{\mtx{Y}}
+\newcommand{\mZ}{\mtx{Z}}
