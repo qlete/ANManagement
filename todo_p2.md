@@ -1,6 +1,6 @@
 ### TODO
 
-- [ ] passer de Jump à Non linear solver
+- [ ] <del> passer de Jump à Non linear solver </del>
 - [ ] cout du curtailment non linéraire
 - [ ] switch to gaussian distribution for transition probabilities (then discretize)
 - [ ] make reinforcement learning for transition probabilities (added value)
