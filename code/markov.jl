@@ -1,6 +1,6 @@
 using MAT
 using JuMP
-using CPLEX
+using Gurobi
 
 # m is the length of the vector
 # n is the number of possibilities in each entry of the vector
@@ -31,7 +31,7 @@ end
 # and returns the cost associated to the unfeasibility of the voltages and currents
 function power_flow(p, r, x, I_up, Vmin, Vmax)
 	Cunfeas = 10000
-	m = Model(solver=CplexSolver())
+	m = Model(solver=GurobiSolver())
 
 	@variable(m, v[1:4]>=0)
 	@variable(m, l[2:4]>=0)
