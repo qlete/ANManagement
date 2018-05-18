@@ -1,6 +1,6 @@
 using MAT
 using JuMP
-using CPLEX
+using Gurobi
 
 """
     vect_to_ind(vec, m, n)
@@ -42,7 +42,7 @@ and returns the cost associated to the unfeasibility of the voltages and current
 """
 function power_flow(p, r, x, I_up, Vmin, Vmax)
 	Cunfeas = 10000
-	m = Model(solver=CplexSolver())
+	m = Model(solver=GurobiSolver())
 
 	@variable(m, v[1:4]>=0)
 	@variable(m, l[2:4]>=0)
