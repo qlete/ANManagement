@@ -1,0 +1,61 @@
+\section{Model}
+\label{sec:model}
+
+In this section, we present the model we used to solve the problem of ANM in DSO grid.
+In particular, we will show how this problem can be cast as a MDP and how RL can be included when the distribution of the uncertainty is unknown and we will highlight the modelling assumptions used.
+
+The electrical network can be mathematically modeled as a graph whose edges represent the electrical lines and whose nodes are locations in the network where power can be consumed or injected.
+In a typical distribution network, the nodes correspond to households or small factories that behave as prosumers.
+In this work, we will make the assumption that the graph is a tree as it is the case of most distribution networks.
+Let $\mathcal{N}$ be the set of nodes and $\mathcal{E}$ be the set of edges.
+Let $\mathcal{G}$ be the graph representing the network, i.e. $\mathcal{G} = (\mathcal{N}, \mathcal{E})$.
+
+We represent every node by an integer in $\{0, \dots, n\}$ where $n = |\mathcal{N}|-1$ is the cardinality of set $\mathcal{N}$.
+The root of the tree is the node that connects the distribution network to the transmission network and is the node $0$ in our model and we denote by $\mathcal{N}_+ = \mathcal{N} \backslash \{0\}$.
+Each node $i \in \mathcal{N}_+$ has a unique ancester denoted by $A_i$ and each node $i \in \mathcal{N}$ has a set of children denoted by $\mathcal{C}_i$.
+We choose the orientation of the lines from being from $i$ to $A_i$ so that we can unambiguously represent each line by its origin node.
+We thus have $\mathcal{E} = \{1, \dots, n\}$.
+We will define the following nodal and branch quantities :
+
+For each node $i \in \mathcal{N}$, we define :
+\begin{itemize}
+  \item $v_i$ as the square of the norm of the complex voltage at that node,
+  \item $s_i = p_i + \mathbf{i} q_i$ as complex net power injection (the net injection being the power consumed minus the power produced)
+  \item $d_i$ is the active net power injection demanded at node $i$, i.e. the power that the agent at that node wants to reinject in the network.
+  It is thus different than the power that will actually be seen by the network (that is, $p_{i}$) as some curtailment mechanisms can take place.
+  This will be further discussed later.
+  It is positive when the power is injected and negative if it is retreived.
+\end{itemize}
+
+For each line $i \in \mathcal{E}$, we define :
+\begin{itemize}
+  \item $z_i = r_i + \mathbf{i}x_i$ as the complex impedence,
+  \item $l_i$ as the square of the norm of the complex current,
+  \item $S_i = P_i + \mathbf{i}Q_i$ as the sending-end complex power, where $P_i$ denote the active power and $Q_i$ the reactive power.
+\end{itemize}
+
+A schematic representation of a line together with the notations we use is given below (Figure \ref{fig:line}).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=8]
+    \draw [->] (0,0.7) -- (0,0.53);
+    \draw [->] (1,0.7) -- (1,0.53);
+    \draw [thick] (0,0.5) -- (1, 0.5);
+    \draw [<-] (0.35, 0.45) -- (0.65, 0.45);
+    \node [left] at (0,0.7) {$s_{A_i}$};
+    \node [right] at (1,0.7) {$s_i$};
+    \node [below, left] at (0,0.5) {$v_{A_i}$};
+    \node [below, right] at (1,0.5) {$v_i$};
+    \node [above] at (0.5, 0.5) {$z_i$};
+    \node [below] at (0.4, 0.45) {$l_i$};
+    \node [below] at (0.6, 0.45) {$S_i$};
+\end{tikzpicture}
+\caption{Schematic representation of a line.}
+\label{fig:line}
+\end{figure}
+
+We consider the problem in a multi-time-step framework.
+This means that the variables are defined at each time step.
+We consider a horizon of $T$ time steps.
+The set of time steps is denoted by $\mathcal{T}$ and each one is represented by a positive integer, i.e. $\mathcal{T} = \{1, \dots, T\}$.
