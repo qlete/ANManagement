@@ -158,7 +158,12 @@ function markovdecision(data)
 	return (V, opt_actions)
 end
 
-data = matread("data_4nodes.mat")
+# # TODO @Quentin
+# include("savecosts.jl")
+# savecost(cost)
+# # # load with cost = loadcost()
+
+data = matread("./data/data_4nodes.mat")
 (V, opt_actions) = markovdecision(data)
 @show V
 @show opt_actions

@@ -1,10 +1,7 @@
 # include("markov.jl")
+include("savecosts.jl")
 
-function cost(a, k, t, data)
-    return rand(1)
-end
-
-print(cost(1,1,1,1))
+cost = loadcost()
 
 function qvalueiteration(list_k::Vector{Int64}, list_t::Vector{Int64})::Tuple{Vector{Float64},Vector{Int64}}
     nb_states = length(list_k)*length(list_t)
