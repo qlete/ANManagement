@@ -135,6 +135,9 @@ We suppose the following set of actions $\mathcal{U}$ independent of the state :
 We thus have $\overline{p}_{i,t} \in \mathcal{U}$ for all node and time step.
 This means that we consider that the DSO can curtail either nothing, half of the production or the entire production.
 
+A diagram representing in a simple fashion how the states of uncertainty
+and the control actions should be seen can be found in figure~\ref{fig:model_diag}.
+
 \subsection{Cost}
 The cost associated to an action in a certain state is made of the two following elements :
 \begin{itemize}
@@ -159,3 +162,11 @@ while the cost of curtailment is computed as
   \ccurt = \sum_{i \in \mathcal{N},t \in \mathcal{T}} \exp{\left(C_e(\overline{p}_{i,t}p_{i,t})\right)}
 \]
 where $C_e$ is the usual cost of energy, taken as $300\si{\euro\per\mega\watt\hour}$ and where $(\cdot)_+$ denotes the positive part function.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.43]{./img/model_diagram.png}
+  \end{center}
+  \caption{Schematic representation of the states and control actions.}
+  \label{fig:model_diag}
+\end{figure}
