@@ -1,28 +1,35 @@
 # include("markov.jl")
 
-function cost(a, k, t, data)
-    return rand(1)
+# include("savecosts.jl")
+# 
+# cost = loadcost()
+
+function cost(a,k,t)
+    return rand(1)[1]
 end
 
-print(cost(1,1,1,1))
-
-function qvalueiteration(list_k::Vector{Int64}, list_t::Vector{Int64})::Tuple{Vector{Float64},Vector{Int64}}
-    nb_states = length(list_k)*length(list_t)
-    # Initialize value vector
-    qval = zeros(nb_states)
+function qvalueiteration()
+    nb_steps = 10
+    nb_actions = 3^4
+    nb_stages = 9
+    qval = zeros(nb_steps, nb_stages, nb_actions)
+    # need to fill qval with cost values
     
+    t = 1
     alpha = 0.9
     beta = 1
-    while sum(abs.(newV-oldV)) > 1e-9
-        qval = copy(newV)
-        for i = 1:nb_states
-            # restrict only to possible values of qval atteignable from qval[i]
-            qval[i] = qval[i] + alpha*(cost(a, k, t, data) + min(qval - qval[i]))
+    while t < 10
+        for k = 1:nb_stages
+            for a = 1:nb_actions
+                min_q = minimum(qval[t,:,:])
+                qval[t,k,a] = qval[t,k,a] + alpha*(cost(a,k,t) + min_q - qval[t,k,a])
+            end
         end
-        newV[15] = min(A[15,:]'*oldV, B[15,:]'*oldV, C[15,:]'*oldV)
-
         # hyperbolic decrease
         alpha = alpha*beta/(alpha + beta)
+        t = t + 1
     end
     return qval
 end
+
+print(qvalueiteration())
