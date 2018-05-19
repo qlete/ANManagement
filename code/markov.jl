@@ -40,26 +40,35 @@ end
 Computes the values of branch and nodal electrical quantities for given injection `p`
 and returns the cost associated to the unfeasibility of the voltages and currents.
 """
-function power_flow(p, r, x, I_up, Vmin, Vmax)
-	Cunfeas = 10000
-	m = Model(solver=CplexSolver())
+function power_flow(power, r, x, I_up, Vmin, Vmax)
+	Cunfeas = 8300
+	solver = CplexSolver(
+    	CPX_PARAM_SCRIND=0,   # Verbose solver output
+    )
 
-	@variable(m, v[1:4]>=0)
-	@variable(m, l[2:4]>=0)
-	@variable(m, P[1:4])
-	@variable(m, Q[1:4])
-	@variable(m, q[1:4])
-	for i = 1:4
+	m = Model(solver=solver)
+
+	@variable(m, v[1:5]>=0)
+	JuMP.fix(v[1], 0.0529)
+	@variable(m, l[2:5]>=0)
+	@variable(m, P[1:5])
+	@variable(m, Q[1:5])
+	@variable(m, q[1:5])
+	@variable(m, p[1:5])
+	for i = 1:5
 		setlowerbound(q[i], -0.01)
 		setupperbound(q[i], 0.01)
+	end
+	for i = 2:5
+		JuMP.fix(p[i], power[i-1])
 	end
 
 	@constraint(m, P[1] == 0)
 	@constraint(m, Q[1] == 0)
-	@constraint(m, [i=1:4], P[i] == p[i] + sum(P[j]-r[j-1]*l[j] for j = i+1:4))
-	@constraint(m, [i=1:4], Q[i] == q[i] + sum(Q[j]-x[j-1]*l[j] for j = i+1:4))
-	@constraint(m, [i=2:4], v[i-1] == v[i] -2*(r[i-1]*P[i]+x[i-1]*Q[i])+(x[i-1]^2+r[i-1]^2)*l[i])
-	@constraint(m, [i=2:4], v[i]*l[i] >= P[i]^2 + Q[i]^2)
+	@constraint(m, [i=1:5], P[i] == p[i] + sum(P[j]-r[j-1]*l[j] for j = i+1:5))
+	@constraint(m, [i=1:5], Q[i] == q[i] + sum(Q[j]-x[j-1]*l[j] for j = i+1:5))
+	@constraint(m, [i=2:5], v[i-1] == v[i] -2*(r[i-1]*P[i]+x[i-1]*Q[i])+(x[i-1]^2+r[i-1]^2)*l[i])
+	@constraint(m, [i=2:5], v[i]*l[i] >= P[i]^2 + Q[i]^2)
 
 	@objective(m, Min, 0)
 
@@ -114,8 +123,8 @@ function cost(a, k, t, data)
 	curtailment[find(iszero, curtailment-1)] = 0
 	curtailment[find(iszero, curtailment-2)] = -0.5
 	curtailment[find(iszero, curtailment-3)] = -1
-	power = forecast_demand + forecast_demand.*curtailment - forecast_solar
-	cost_curt = Ccurt*sum(abs.(forecast_solar-forecast_demand-power))
+	power = forecast_solar + forecast_solar.*curtailment - forecast_demand
+	cost_curt = sum(-Ccurt*forecast_solar.*curtailment)
 
 	# Get data
 	r = data["r"]
@@ -148,7 +157,11 @@ function markovdecision(data)
 		for k = 1:nb_stages
 			all_possibilities = zeros(nb_actions)
 			for a = 1:nb_actions
-				all_possibilities[a] = cost(a, t, k, data) + P[k,:]'*V[:,t+1]
+				cost_a = cost(a, k, t, data)
+				# print(a)
+				# println(" : ")
+				# # println(cost_a)
+				all_possibilities[a] = cost_a + P[k,:]'*V[:,t+1]
 			end
 			V[k,t] = minimum(all_possibilities)
 			opt_actions[k,t] = indmin(all_possibilities)
@@ -158,6 +171,7 @@ function markovdecision(data)
 	return (V, opt_actions)
 end
 
+# println(ind_to_vect(1, 4, 3))
 data = matread("data_4nodes.mat")
 (V, opt_actions) = markovdecision(data)
 @show V
