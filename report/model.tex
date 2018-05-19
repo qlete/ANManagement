@@ -72,7 +72,7 @@ Therefore, the net power injection at each node can be decomposed into a power p
 \subsection{Power flow equations}
 
 For a radial distribution network, the equations that link all nodal and branch electrical quantities by taking \emph{Kirchhoff}'s laws into account are called the \emph{Power Flow equations}.
-They can be written as
+They can be written as (\cite{Farivar_Relax1})
 
 \begin{align}
   & 0  =  p_{0,t} + \sum_{j\in \mathcal{C}_0} \Big(P_{j,t}-r_{j}l_{j,t} \Big), \hspace{0.5cm} \forall{t} \in \mathcal{T} \label{ACOPF1}\\
@@ -88,7 +88,7 @@ With these equations, the power injection at each node is sufficient to obtain t
 
 \subsection{Uncertainty}
 
-These power injection, however, at subject to uncertainty.
+These power injection, however, is subject to uncertainty.
 They depend on the consumption and the production at each node.
 We consider that forecast values, denoted by $\tilde{p}_{i,t}^p$ and $\tilde{p}_{i,t}^c$ are available to the DSO and the uncertainty can thus be modeled as the deviation from these forecast values.
 Let us denote by $\delta_t^p$ and $\delta_t^c$ the deviation for, respectively, the production and the consumption at time step $t$.
@@ -151,11 +151,11 @@ Let us suppose that the following limits on voltage and current have to hold :
 
 The cost of congestion is computed as
 \begin{align*}
-  \ccong &= \sum_{i \in \mathcal{N}} \left(\exp{\left((v_{i,t}-\overline{v})_+\right)} + \exp{\left((v_{i,t}-\overline{v})_+\right)}\right)  \\
-  &+ \sum_{j \in \mathcal{N}_+} \left(\exp{\left((l_{j,t}-\overline{l})_+\right)} \right)
+  \ccong &= \sum_{i \in \mathcal{N}} \left( \exp{\left(-(\overline{v}-v_{i,t})_+\right)} + \exp{\left(-(v_{i,t}-\underline{v})_+\right)} \right)  \\
+  &+ \sum_{j \in \mathcal{N}_+} \exp{\left(-(\overline{l}-l_{j,t})_+\right)}
 \end{align*}
 while the cost of curtailment is computed as
 \[
-  \ccurt = \sum_{i \in \mathcal{N},t \in \mathcal{T}} \left( \exp{C_e(\overline{p}_{i,t}p_{i,t})} \right)
+  \ccurt = \sum_{i \in \mathcal{N},t \in \mathcal{T}} \exp{\left(C_e(\overline{p}_{i,t}p_{i,t})\right)}
 \]
-where $C_e$ is the usual cost of energy, taken as $300\si{\euro\per\mega\watt\hour}$.
+where $C_e$ is the usual cost of energy, taken as $300\si{\euro\per\mega\watt\hour}$ and where $(\cdot)_+$ denotes the positive part function.
