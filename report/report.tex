@@ -1,16 +1,5 @@
 \documentclass[journal,10pt,english]{IEEEtran}
 
-\ifCLASSOPTIONcompsoc
-    \usepackage[caption=false, font=normalsize, labelfont=sf, textfont=sf]{subfig}
-\else
-\usepackage[caption=false, font=footnotesize]{subfig}
-\fi
-
-%\usepackage[fighead,nolists,nomarkers]{endfloat}
-
-\usepackage[backend=biber]{biblatex}
-\addbibresource{./references.bib}
-
 \input{lib.tex}
 
 \newcommand{\figref}[1]{\textsc{Fig.~\ref{fig:#1}}}
@@ -28,7 +17,7 @@
 \input{stateart.tex}
 \input{model.tex}
 
-\printbibliography
-
+\bibliographystyle{plain}
+\bibliography{references}
 
 \end{document}
