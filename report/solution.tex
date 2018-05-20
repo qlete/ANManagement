@@ -2,4 +2,12 @@
 \label{sec:solution}
 
 Our goal is now to find the policy $\pi$, which is an action to execute for each state, that will minimize the total cost on the time horizon $\mathcal{T}$.
- 
+We now define the Q-values of the MDP for each action $a$, state $k$, and policy $\pi$, which is defined as the expected cost of applying action $a$ at stage $k$ and then relying on policy $\pi$.
+
+The basics of Reinforcement Learning is to apply stochastic approximation on the expectation of the cost to obtain algorithm can thus be written as
+\[
+  Q(k,a) \leftarrow Q(k,a) + \alpha(t) \left( c(a|k) + \underset{j\in \mathcal{U}(k')}{\text{min}} \{Q(k',j)\} + Q(k,a) \right)
+\]
+where $t$ represents an iteration variable and where alpha $t$ is a coefficient which decreases with $t$.
+
+As we can see, this algorithm is model free in the sense that it is not required to know the probability distribution in advance.
