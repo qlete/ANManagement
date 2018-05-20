@@ -147,6 +147,7 @@ data is the dictionnary given by the call `matread(\"data_4nodes.mat\")`.
 function markovdecision(data)
 	pDemand = data["pDemand"]
 	nb_steps = size(pDemand)[1]
+	print(nb_steps)
 	nb_nodes = size(pDemand)[2]
 	nb_actions = 3^4
 	nb_stages = 9
@@ -158,9 +159,7 @@ function markovdecision(data)
 			all_possibilities = zeros(nb_actions)
 			for a = 1:nb_actions
 				cost_a = cost(a, k, t, data)
-				# print(a)
-				# println(" : ")
-				# # println(cost_a)
+				cost[a,k,t]  = cost_a
 				all_possibilities[a] = cost_a + P[k,:]'*V[:,t+1]
 			end
 			V[k,t] = minimum(all_possibilities)
@@ -171,10 +170,9 @@ function markovdecision(data)
 	return (V, opt_actions)
 end
 
-# # TODO @Quentin
 # include("savecosts.jl")
 # savecost(cost)
-# # # load with cost = loadcost()
+# load with cost = loadcost()
 
 data = matread("./data/data_4nodes.mat")
 (V, opt_actions) = markovdecision(data)
