@@ -1,1 +1,5 @@
-# MDP and RL
+# Reinforcement learning
+
+```@docs
+qvalueiteration
+```
