@@ -109,43 +109,57 @@ We consider the following discrete sample space $\mathcal{P}$ for both type of d
 with an unknown probability distribution.
 This means that we suppose that both the consumption and the production can either be $10\%$ more than the forecast value, exactly the forecast value or $-10\%$ of the forecast value.
 
+\subsection{Flexible loads}
+In modern distribution ntworks, some loads are more flexible than others.
+Flexible loads can include small factories who sign contracts with the DSO allowing it to disconnect the factory from the network for some time.
+In this work, we consider that there is a set $\mathcal{F}$ of flexible load.
+They are either in the state on or off.
+For these loads, we consider than there are no production but only consumption.
+
 \subsection{Set of states}
 
-The state of the system is made of the time step in which we are in addition to the level of the deviation from the forecast values for both the consumption and the production.
+The state of the system is made of the time step in which we are, the level of the deviation from the forecast values for both the consumption and the production and the state of the flexible loads.
+The state is represented by a vector of length $2+|\mathcal{F}|$ where the two first elements correspond to the deviation from respectively the production and the consumption and the $|\mathcal{F}|$ last elements are the binay states of the flexible loads ($0$ or $1$).
 We denote by $\mathcal{S}$ the set of states and by $\mathcal{S}_t$ the set of states for a fixed $t$.
 We have that
-\[
-  \mathcal{S}_t = \{(0.1, 0.1), (0, 0.1), ..., (-0.1, -0.1)\}
-\]
-Note that $|\mathcal{S}_t| = 3^2 = 9$ and that $\mathcal{S}_t$ is independent of $t$.
+\begin{align*}
+  \mathcal{S}_t = \{&(0.1, 0.1, 0, \dots, 0), (0, 0.1,0, \dots, 0), \dots, \\
+                    &(-0.1, -0.1,1, \dots, 1)\} \\
+\end{align*}
+Note that $|\mathcal{S}_t| = 3^2 2^{|\mathcal{F}|} = 9 \cdot 2^{|\mathcal{F}|}$ and that $\mathcal{S}_t$ is independent of $t$.
 
 \subsection{Control actions}
 
-We consider that the action the DSO has to control its network is the curtailment of all or part of the PV production at each node and at each time step.
+We consider that the action the DSO has to control its network is the curtailment of all or part of the PV production at each node and the choice of activating or not each flexible load, all of these at each time step.
 By curtailing excessive solar production, the reliability of the network could be greatly increased.
 This curtailment is also expressed as a percentage of the total injection seen by the network.
 We denote by $\overline{p}_{i,t}$ the curtailment decided for node $i \in \mathcal{N}$ and $t \in \mathcal{T}$ so that the total power injected after curtailment is written as
 \[
   p^{inj}_{i,t} = p_{i,t} - \overline{p}_{i,t}p_{i,t}
 \]
-We suppose the following set of actions $\mathcal{U}$ independent of the state :
+We suppose the following set of curtailment actions $\mathcal{U}_{\text{load}}$ independent of the state :
 \[
-  \mathcal{U} = \{0, 0.5, 1\}
+  \mathcal{U}_{\text{load}} = \{0, 0.5, 1\}
 \]
-We thus have $\overline{p}_{i,t} \in \mathcal{U}$ for all node and time step.
+We thus have $\overline{p}_{i,t} \in \mathcal{U}_{\text{load}}$ for all node and time step.
 This means that we consider that the DSO can curtail either nothing, half of the production or the entire production.
+
+The set of flexible load actions, denoted by $\mathcal{U}_{\text{flex}}$, depends on the state of the flexible loads.
+If the flexible load is on, we can either deactivate it or not.
+When it is off, we can only let it off.
 
 A diagram representing in a simple fashion how the states of uncertainty
 and the control actions should be seen can be found in figure~\ref{fig:model_diag}.
 
 \subsection{Cost}
-The cost associated to an action in a certain state is made of the two following elements :
+The cost associated to an action in a certain state is made of the three following elements :
 \begin{itemize}
   \item The cost of congestion. It is the cost associated to a power flow that would result in breaking the voltage and current limits.
   \item The cost of curtailment. It is the cost associated to throwing away free green energy.
+  \item The cost of flexible load disconnection.
 \end{itemize}
 
-We will model both cost by exponential functions.
+We will model both cost by linear functions.
 Let us suppose that the following limits on voltage and current have to hold :
 \begin{align*}
   \underline{v} \le &v_{i,t} \le \overline{v}\\
@@ -154,14 +168,18 @@ Let us suppose that the following limits on voltage and current have to hold :
 
 The cost of congestion is computed as
 \begin{align*}
-  \ccong &= \sum_{i \in \mathcal{N}} \left( \exp{\left(-(\overline{v}-v_{i,t})_+\right)} + \exp{\left(-(v_{i,t}-\underline{v})_+\right)} \right)  \\
-  &+ \sum_{j \in \mathcal{N}_+} \exp{\left(-(\overline{l}-l_{j,t})_+\right)}
+  \ccong &= C_c \Big( \sum_{i \in \mathcal{N}} -(\overline{v}-v_{i,t})_+ - (v_{i,t}-\underline{v})_+  \\
+  &+ \sum_{j \in \mathcal{N}_+} -(\overline{l}-l_{j,t})_+ \Big)
 \end{align*}
 while the cost of curtailment is computed as
 \[
-  \ccurt = \sum_{i \in \mathcal{N},t \in \mathcal{T}} \exp{\left(C_e(\overline{p}_{i,t}p_{i,t})\right)}
+  \ccurt = \sum_{i \in \mathcal{N},t \in \mathcal{T}} C_e(\overline{p}_{i,t}p_{i,t})
 \]
-where $C_e$ is the usual cost of energy, taken as $300\si{\euro\per\mega\watt\hour}$ and where $(\cdot)_+$ denotes the positive part function.
+and the cost of flexible load is
+\[
+  \cflex = \sum_{d \in \mathcal{F},t \in \mathcal{T}} C_f(\text{deact}_{d,t})
+\]
+where $C_c$ is the cost of curtailment (here, $8300\si{\euro\per\mega\watt\hour}$), where $C_f$ is the cost of deactivating a flexible load (here, $1\si{\euro\per\mega\watt\hour}$) and where $C_e$ is the usual cost of energy, taken as $300\si{\euro\per\mega\watt\hour}$ and where $(\cdot)_+$ denotes the positive part function.
 
 \begin{figure}
   \begin{center}

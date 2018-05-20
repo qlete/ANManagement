@@ -1,38 +1,38 @@
 \section{Introduction}
 \label{sec:intro}
-With the advent of Renewable Energy Sources (RES) for electricity production at the \emph{distribution} scale, the role of the Distribution System Operator (DSO) is expected to change dramatically in the next decade. 
-Historically, the flow of power in the distribution network was simple and well defined : acquired from the Transmission grid, the power was injected in the network at the substation node and was sent to the residential consumer located at the root of the network. 
+With the advent of Renewable Energy Sources (RES) for electricity production at the \emph{distribution} scale, the role of the Distribution System Operator (DSO) is expected to change dramatically in the next decade.
+Historically, the flow of power in the distribution network was simple and well defined : acquired from the Transmission grid, the power was injected in the network at the substation node and was sent to the residential consumer located at the root of the network.
 Nowadays, power can be produced by the residential customers themselves who reinject their overproduction in the network.
-The flow of power became \emph{bi-directional}, which implies new challenges in the operations of the distribution network (DN). 
+The flow of power became \emph{bi-directional}, which implies new challenges in the operations of the distribution network (DN).
 Moreover, the energy produced at the distribution scale is also intermittent and has a \emph{high uncertainty}
-(e.g. solar panels). 
+(e.g. solar panels).
 This uncertainty should be taken into account and it is necessary for the DSO to develop new tools for an optimal operation of the network.
-In its report about the energy transition~\cite{utility}, the MIT Energy Initiative insists on the fact that DSOs will have to abandon their old \textquote{fit-and-forget} approach, which consist in decoupling the planning and operations of the network. 
-With their own words : 
+In its report about the energy transition~\cite{utility}, the MIT Energy Initiative insists on the fact that DSOs will have to abandon their old \textquote{fit-and-forget} approach, which consist in decoupling the planning and operations of the network.
+With their own words :
 \begin{displayquote}
 \emph{Distribution companies will have to become true \textquote{system operators}.}
 \end{displayquote}
 % @Quentin
 % is it not better to have it \enquote{\textit{...}} to avoid being centered and on a new line ?
 
-In this context, one of the main challenges for the DSO is to maintain a high \emph{reliability}. 
-This imply that integrating RES in the system should have no influence on the voltage and current control. 
-Voltage should remain below an acceptable deviation from its nominal value to ensure the security of electric devices and current should remain below the line capacity. 
-Active Network Management (ANM) is a precious tool to combine optimal operations with high reliability. 
+In this context, one of the main challenges for the DSO is to maintain a high \emph{reliability}.
+This imply that integrating RES in the system should have no influence on the voltage and current control.
+Voltage should remain below an acceptable deviation from its nominal value to ensure the security of electric devices and current should remain below the line capacity.
+Active Network Management (ANM) is a precious tool to combine optimal operations with high reliability.
 In this work, we will use \emph{Markov decision processes} and consider how
 reinforcement learning could be used in order
 to include the \emph{uncertainty} in existing ANM tools.
 The main goal of this paper will be to \emph{consider the extent to which those techniques
-can be used to replace more classic optimization methods}. 
+can be used to replace more classic optimization methods}.
 Indeed, with an ever growing population, and consequently denser cities,
 there is a need to get good solutions
 which can include a lot of data while no taking hours to be executed,
 for it being a recurring problem in classical optimization solvers when
 optimality is wanted.
 
-The report will first give some insight and details of our ``research'' question 
-in section~\ref{sec:stateart} as well as a state of the art description.
-Next, sections~\ref{sec:model} and~\ref{sec:solution} will present respectively 
+The report will first review state of the art techniques from the litterature in section ~\ref{sec:stateart}
+before giving some details of our ``research'' question and objectives in section~\ref{sec:objective}.
+Next, sections~\ref{sec:model} and~\ref{sec:solution} will present respectively
 the model we choose to represent the problem as well as the solution.
 Then, we will describe how we concretely implemented the solution using the~\textsc{Julia}
 programming language in section~\ref{sec:implementation}, including the challenges
