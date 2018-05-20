@@ -44,6 +44,7 @@ The main assumptions of the RL decision framework are the following :
 \item We suppose that the probability distribution for load and production curtailment is discrete.
 \item We suppose that the curtailment actions are discrete.
 \item The flexible load is either on or off, but we can't activate the flexibility of part of the load.
+\item We have to pay a large cost when voltage and current bounds are violated.
 \end{itemize}
 
 The assumptions of the optimization part are
@@ -51,6 +52,8 @@ The assumptions of the optimization part are
 \item The problem is deterministic.
 \item We don't have flexible loads.
 \item Curtailment is allowed to be continuous.
+\item Voltage and current bounds are added as constraints so they can't be violated.
+\item We minimize the total cost of curtailment. 
 \end{itemize}
 
 Note that it would have been possible to relax the deterministic assumption of the optimization problem by using stochastic programming.
@@ -58,9 +61,11 @@ However, stochastic programming is much less computationally efficient.
 We could also have considered flexible loads, but the problem would have become mixed-intger.
 This again, is cumbersome and would have decreased greatly the computational efficiency of the problem.
 
-Therefore, we can say that the scope of the RL framework is larger because it takes naturally uncertainty into account but the assumption that curtailment is discrete is quite strict for real case applications. 
+Therefore, we can say that the scope of the RL framework is larger because it takes naturally uncertainty into account but the assumption that curtailment is discrete is quite strict for real case applications.
 
 \subsection{Computational complexity}
+
+
 
 \subsection{Results}
 % section results (end)

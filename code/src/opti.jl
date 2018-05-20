@@ -2,8 +2,16 @@ using MAT
 using JuMP
 using CPLEX
 
+
+"""
+    opti()
+    
+Solve the multi-time-steps optimization problem for ANM of DSO
+"""
 function opti()
 	data = matread("./data/data_4nodes.mat")
+
+	tic()
 
 	# Get data
 	r = data["r"]
@@ -51,6 +59,11 @@ function opti()
 	@objective(m, Min, Ccurt*sum(pSolar[t,i-1]-p_prod[i,t] for i=2:5,t=1:169))
 
 	status = solve(m)
+
+	p_prod_value = getvalue(p_prod)
+	print(sum(pSolar[t,i-1]-p_prod_value[i,t] for i=2:5,t=1:169))
+
+	toc()
 end
 
 opti()

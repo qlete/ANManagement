@@ -184,7 +184,7 @@ function markovdecision(data)
 				actions = ind_to_vect(a,4,3)
 				if actions[1] == 1
 					big_P = [P zeros(9,9);zeros(9,9) P]
-				elseif actions[2] == 1
+				elseif actions[1] == 2
 					big_P = [zeros(9,9) P;zeros(9,9) zeros(9,9)]
 				end
 				cost_a = cost(a, k, t, data)
