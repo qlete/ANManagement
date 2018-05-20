@@ -111,6 +111,7 @@ Computes the cost for a given action, stage and time step.
 """
 function cost(a, k, t, data)
 	Ccurt = 300
+	Cflex = 1
 	forecast_demand = data["pDemand"][t, :]
 	forecast_solar = data["pSolarMax"][t, :]
 
@@ -132,6 +133,7 @@ function cost(a, k, t, data)
 	power = zeros(4)
 	power[1:3] = forecast_solar[1:3] + forecast_solar[1:3].*curtailment - forecast_demand[1:3]
 	power[4] = actions[1] == 1 ? 0 : forecast_demand[4]
+	cost_flex = actions[1] == 1 ? 0 : Cflex
 	cost_curt = sum(-Ccurt*forecast_solar[1:3].*curtailment)
 
 	# Get data
@@ -142,7 +144,7 @@ function cost(a, k, t, data)
 	Vmax = data["Vmax"]
 
 	cost_unfeas = power_flow(power, r, x, I_up, Vmin, Vmax)
-	tot_cost = cost_curt + cost_unfeas
+	tot_cost = cost_curt + cost_unfeas + cost_flex
 end
 
 
@@ -155,7 +157,6 @@ data is the dictionnary given by the call `matread(\"data_4nodes.mat\")`.
 function markovdecision(data)
 	pDemand = data["pDemand"]
 	nb_steps = size(pDemand)[1]
-	print(nb_steps)
 	nb_nodes = size(pDemand)[2]
 	nb_stages = 18
 	cost_akt = zeros(2*3^3, nb_stages, nb_steps)
