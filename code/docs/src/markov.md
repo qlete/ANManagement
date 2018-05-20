@@ -1,4 +1,4 @@
-# Implementing the Markov decision process (`markov.jl`)
+# Implementing the Markov decision process and model (`markov.jl`)
 
 ```@docs
 vect_to_ind

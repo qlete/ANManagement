@@ -5,6 +5,8 @@ makedocs(
     sitename = "ActiveNetworkManagement.jl",
     pages = [
     "Summary" => "index.md",
-    "Main" => "markov.md",
-    "MDF and RL" => "rl.md"]
+    "MDP and model" => "markov.md",
+    "Reinforcement learning" => "rl.md",
+    "Multi-time-steps optimization" => "opti.md",
+    ]
 )
