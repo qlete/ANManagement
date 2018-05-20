@@ -103,7 +103,8 @@ end
     cost(a, k, t, data)
     
 Computes the cost for a given action, stage and time step.
-`a` is an integer from 1:81 representing the action (+10%, +0% or -10% for each node).
+`a` is an integer from 1:54 representing the action (+10%, +0% or -10% for each household
+ and the activation level for the flexible load).
 `k` is an integer from 1:9 representing the state (demand or solar, +10%, +0% or -10%).
 `t` is an integer from 1:169 representing the time step (one week, hourly resolution).
 """
@@ -113,7 +114,8 @@ function cost(a, k, t, data)
 	forecast_solar = data["pSolarMax"][t, :]
 
 	# Apply uncertainty given by k to demand and solar production
-	uncertainty = ind_to_vect(k, 2, 3)
+	state = ind_to_vect(k, 3, 3)
+	uncertainty = state[2:3]
 	uncertainty[find(iszero, uncertainty-1)] = 1.1
 	uncertainty[find(iszero, uncertainty-2)] = 1
 	uncertainty[find(iszero, uncertainty-3)] = 0.9
@@ -121,12 +123,15 @@ function cost(a, k, t, data)
 	forecast_solar = uncertainty[2]*forecast_solar
 
     # Apply curtailment action given by k
-	curtailment = ind_to_vect(a, 4, 3)
+	actions = ind_to_vect(a, 4, 3)
+	curtailment = actions[2:4]
 	curtailment[find(iszero, curtailment-1)] = 0
 	curtailment[find(iszero, curtailment-2)] = -0.5
 	curtailment[find(iszero, curtailment-3)] = -1
-	power = forecast_solar + forecast_solar.*curtailment - forecast_demand
-	cost_curt = sum(-Ccurt*forecast_solar.*curtailment)
+	power = zeros(4)
+	power[1:3] = forecast_solar[1:3] + forecast_solar[1:3].*curtailment - forecast_demand[1:3]
+	power[4] = actions[1] == 1 ? 0 : forecast_demand[4]
+	cost_curt = sum(-Ccurt*forecast_solar[1:3].*curtailment)
 
 	# Get data
 	r = data["r"]
@@ -151,18 +156,36 @@ function markovdecision(data)
 	nb_steps = size(pDemand)[1]
 	print(nb_steps)
 	nb_nodes = size(pDemand)[2]
-	nb_actions = 3^4
-	nb_stages = 9
-	P = 1/nb_stages*ones(nb_stages, nb_stages)
+	nb_stages = 18
+	big_P = zeros(18,18)
+	P = zeros(9,9)
+	for i = 1:9
+		for j = 1:9
+			val = 1
+			vec1 = ind_to_vect(i, 3, 3)[2:3]
+			vec2 = ind_to_vect(j, 3, 3)[2:3]
+			for k in abs.(vec1-vec2)
+				val = val*(k == 0 ? 0.5 : 0.25)
+			end
+			P[i,j] = val
+		end
+	end
 	V = zeros(nb_stages, nb_steps)
 	opt_actions = zeros(nb_stages, nb_steps)
 	for t = nb_steps-1:-1:1
 		for k = 1:nb_stages
+			state = ind_to_vect(k,3,3)[1]
+			nb_actions = state[1] == 1 ? 2*3^3 : 3^3
 			all_possibilities = zeros(nb_actions)
 			for a = 1:nb_actions
+				actions = ind_to_vect(a,4,3)
+				if actions[1] == 1
+					big_P = [P zeros(9,9);zeros(9,9) P]
+				elseif actions[2] == 1
+					big_P = [zeros(9,9) P;zeros(9,9) zeros(9,9)]
+				end
 				cost_a = cost(a, k, t, data)
-				cost[a,k,t]  = cost_a
-				all_possibilities[a] = cost_a + P[k,:]'*V[:,t+1]
+				all_possibilities[a] = cost_a + big_P[k,:]'*V[:,t+1]
 			end
 			V[k,t] = minimum(all_possibilities)
 			opt_actions[k,t] = indmin(all_possibilities)
