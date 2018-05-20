@@ -30,7 +30,7 @@ The characteristics of the lines are summarized in table~\ref{tab:char_lines}.
   \end{tabular}
 \end{table}
 
-We use real single-phase household electric power consumption profiles 
+We use real single-phase household electric power consumption profiles
 that were sampled in 2008, with a 1 hour time resolution.
 We also have real PV power generation profiles for all these households that are based upon measurements at an installation of the KU Leuven, also with a 1 hour resolution.
 The horizon used is one week and the profiles were acquired in May.
@@ -53,7 +53,7 @@ The assumptions of the optimization part are
 \item We don't have flexible loads.
 \item Curtailment is allowed to be continuous.
 \item Voltage and current bounds are added as constraints so they can't be violated.
-\item We minimize the total cost of curtailment. 
+\item We minimize the total cost of curtailment.
 \end{itemize}
 
 Note that it would have been possible to relax the deterministic assumption of the optimization problem by using stochastic programming.
@@ -64,8 +64,18 @@ This again, is cumbersome and would have decreased greatly the computational eff
 Therefore, we can say that the scope of the RL framework is larger because it takes naturally uncertainty into account but the assumption that curtailment is discrete is quite strict for real case applications.
 
 \subsection{Computational complexity}
+Figure~\ref{fig:time} represents the time taken by the two methods.
 
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{img/time}
+\caption{Comparion of the total time of the two methods.}
+\label{fig:time}
+\end{figure}
 
+As we can see on the figure, the RL method takes more than 10 times the time of the optimization method.
+However, note that the assumptions of the multi-time-steps optimization program are quite strict.
+If we would have added the flexible load and the uncertainty, the modelisation as an optimization program would have been more complicated and the time would have increased. 
 
 \subsection{Results}
 % section results (end)

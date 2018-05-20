@@ -36,6 +36,9 @@ function qvalueiteration(cost_atk)
     end
     return opt_action
 end
+
+tic()
+
 cost_akt = loadcost()
 actions = qvalueiteration(cost_akt)
 
@@ -43,4 +46,5 @@ for t = 1:size(actions)[1]
     print(actions[t,size(actions)[2]])
 end
     
+toc()
 
