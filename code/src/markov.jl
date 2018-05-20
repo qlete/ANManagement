@@ -1,3 +1,5 @@
+export vect_to_ind, ind_to_vect, power_flow, cost, markovdecision
+
 using MAT
 using JuMP
 using CPLEX
@@ -174,7 +176,9 @@ end
 # savecost(cost)
 # load with cost = loadcost()
 
-data = matread("./data/data_4nodes.mat")
-(V, opt_actions) = markovdecision(data)
-@show V
-@show opt_actions
+function run()
+    data = matread("./data/data_4nodes.mat")
+    (V, opt_actions) = markovdecision(data)
+    @show V
+    @show opt_actions
+end

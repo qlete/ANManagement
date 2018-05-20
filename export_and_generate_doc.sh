@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+### variables
+if [ $USER = "john" ]
+then
+ 	repo=~/ANManagement
+ 	path_to_package=/Users/john/.julia/v0.6/ActiveNetworkManagement
+else
+ 	repo=~/Documents/MA2Q2/Data_mining/ANManagement
+ 	path_to_package=/home/quentin/.julia/v0.6/ActiveNetworkManagement
+fi
+
+### code part
+# src
+cp -rf $repo/code/src/* $path_to_package/src/;
+
+### doc part 
+# copy docs to real package doc
+cp -rf $repo/code/docs/* $path_to_package/docs/;
+# execute make.jl
+sudo julia $path_to_package/docs/make.jl;
+# copy back doc to repo
+cp -rf $path_to_package/docs/build/* $repo/html_doc/
