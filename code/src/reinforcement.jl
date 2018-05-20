@@ -40,11 +40,18 @@ function qvalueiteration(cost_akt)
     return opt_action
 end
 
+tic()
+
+cost_akt = loadcost()
+actions = qvalueiteration(cost_akt)
+
 function run_and_save_bestactions()
     cost_akt = loadcost()
     opt_actions = qvalueiteration(cost_akt)
     save("./data/opt_actions.jld", "opt_actions", opt_actions)
 end
+    
+toc()
 
 # run_and_save_bestactions()
 
