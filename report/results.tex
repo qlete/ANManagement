@@ -35,13 +35,18 @@ that were sampled in 2008, with a 1 hour time resolution.
 We also have real PV power generation profiles for all these households that are based upon measurements at an installation of the KU Leuven, also with a 1 hour resolution.
 The horizon used is one week and the profiles were acquired in May.
 
+Before comparing the optimization and the RL algorithm, we present a typical curtailment profile of the RL method on figure \ref{fig:power_cut}.
+
 \begin{figure}
   \begin{center}
-    \includegraphics[scale=0.7]{./img/power_cut.png}
+    \includegraphics[scale=0.5]{./img/power_cut.png}
   \end{center}
   \caption{Power cut of house 4 following power forecast.}
   \label{fig:power_cut}
 \end{figure}
+
+This figure shows that at some key time steps, curtailment is indeed needed to ensure the reliability of the network.
+
 
 Let us now present our results for the comparison between reinforcement learning based on the Markov chain model and multi-time-steps deterministic optimization.
 
@@ -83,7 +88,19 @@ Figure~\ref{fig:time} represents the time taken by the two methods.
 
 As we can see on the figure, the RL method takes more than 10 times the time of the optimization method.
 However, note that the assumptions of the multi-time-steps optimization program are quite strict.
-If we would have added the flexible load and the uncertainty, the modelisation as an optimization program would have been more complicated and the time would have increased. 
+If we would have added the flexible load and the uncertainty, the modelisation as an optimization program would have been more complicated and the time would have increased.
 
-\subsection{Results}
+\subsection{Optimal decision}
+The comparison of the two methods in terms of the total curtailment on the network is shown in figure \ref{fig:curt_comp}.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{img/curt_comp}
+\caption{Comparion of the total curtailment in the two methods.}
+\label{fig:curt_comp}
+\end{figure}
+
+Interestingly enough, both curtailment are very similar.
+This suggests that the discretization of the curtailment actions for RL was actually a reasonable assumption, which is a good argument in favor of this method for the Active Network Management of Distribution Network.
+
 % section results (end)

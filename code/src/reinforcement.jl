@@ -2,7 +2,7 @@ include("markov.jl")
 
 include("savecosts.jl")
 
-using Plots, PyPlot
+using PyPlot
 
 function qvalueiteration(cost_akt)
     nb_time_steps = 169
@@ -40,18 +40,18 @@ function qvalueiteration(cost_akt)
     return opt_action
 end
 
-tic()
+# tic()
 
-cost_akt = loadcost()
-actions = qvalueiteration(cost_akt)
+# cost_akt = loadcost()
+# actions = qvalueiteration(cost_akt)
 
-function run_and_save_bestactions()
-    cost_akt = loadcost()
-    opt_actions = qvalueiteration(cost_akt)
-    save("./data/opt_actions.jld", "opt_actions", opt_actions)
-end
+# function run_and_save_bestactions()
+#     cost_akt = loadcost()
+#     opt_actions = qvalueiteration(cost_akt)
+#     save("./data/opt_actions.jld", "opt_actions", opt_actions)
+# end
     
-toc()
+# toc()
 
 # run_and_save_bestactions()
 
@@ -100,7 +100,10 @@ times = [i for i=1:nb_time_steps]
 
 # histogram(p_grid, nbins = 20)
 
-bar(times, p_grid, xticks([],[]), xlabel("Time step"), ylabel("Power in kW"))
+bar(times, p_grid)
+xticks([],[])
+xlabel("Time step")
+ylabel("Curtailment [kW]")
 show()
 
 # show()
