@@ -1,32 +1,32 @@
 \section{State of the art}
 \label{sec:stateart}
 
-To combine optimal investment and operational decision, many people have investigated the use of large multi-time-steps optimization models (\cite{zonal_int}, \cite{Baker2012OptimalIO}, \cite{paolone}).
-The integration of uncertainty in optimization is usually done either in a robust way (\cite{LorcaSun}, \cite{adaptative}, \cite{BM2}) or using stochastic optimization (\cite{Oren}).
+To combine optimal investment and operational decision, many people have investigated the use of large multi-time-steps optimization models~\cite{zonal_int,Baker2012OptimalIO,paolone}.
+The integration of uncertainty in optimization is usually done either in a robust way~\cite{LorcaSun,adaptative,BM2} or using stochastic optimization~\cite{Oren}.
 The main challenge when using optimization for planning the network is that they usually quickly become intractable.
-To decrease the computation complexity, linear and convex relaxations have been proposed (\cite{Farivar_Relax1}, \cite{Farivar_Relax2}, \cite{BM1}) where computational cost is considerably reduced.
+To decrease the computation complexity, linear and convex relaxations have been proposed~\cite{Farivar_Relax1,Farivar_Relax2,BM1} where computational cost is considerably reduced.
 The drawback is that the solutions proposed are not necessary feasible anymore.
-Feasibility can be recovered by solving a sequence of convex problems (\cite{Nali}).
+Feasibility can be recovered by solving a sequence of convex problems~\cite{Nali}.
 
 More recently, Markov Decision Processes (MDP) and Reinforcement Learning (RL) have been proposed to deal with uncertainty in optimal planning of electricity grids.
-A recent survey reviews the use of RL in power system operations and propose new perspectives for developing this field of research (\cite{RLSurvey}).
+A recent survey reviews the use of RL in power system operations and propose new perspectives for developing this field of research~\cite{RLSurvey}.
 \emph{The goal of this project is thus to make a comparison between classic optimization
 models versus more recent MDP and RL implementations, and to analyze what trade-offs
 have to be made in either cases.}
 
-Q-Learning has been successfully applied for congestion management in \cite{ZARRABIAN2016179}.
-In \cite{fuzzy}, a controller for microgrids is developed by combining deep learning and reinforcement learning ideas.
+Q-Learning has been successfully applied for congestion management in~\cite{ZARRABIAN2016179}.
+In~\cite{fuzzy}, a controller for microgrids is developed by combining deep learning and reinforcement learning ideas.
 The idea is that the reinforcement signal is used alongside the backpropagation of error to tune the output layer weights of the controller.
-Still in the domain of congestion control, a distributed Q-learning algorithm to find the optimal reactive power dispatch have been applied in \cite{volt_control}.
+Still in the domain of congestion control, a distributed Q-learning algorithm to find the optimal reactive power dispatch have been applied in~\cite{volt_control}.
 The approach seems to be good to quickly reach a good sub-optimal solution.
-RL have also been used to find an optimal solution to the battery management problem in microgrid (\cite{Battery}).
+RL have also been used to find an optimal solution to the battery management problem in microgrid~\cite{Battery}.
 They model the problem as an MDP by defining the battery State of Charge as the action variable.
 The algorithm proposed is a batch RL algorithm.
 
-Finally, in \cite{Gemine} the problem of ANM for the DSO grid with large renewable generation is explored.
+Finally, in~\cite{Gemine} the problem of ANM for the DSO grid with large renewable generation is explored.
 In addition of describing a multi-time-steps optimization model and defining new benchmark, they cast the problem as a MDP.
 In this model, the control actions are the active power curtailment decided by the DSO at each time step as well as the corresponding reactive power level.
 It is also possible to decide on the state (on or off) of some predefined flexible loads.
 The uncertainty comes from the solar irradiance and the wind speed at each time steps.
 Past realizations of uncertainty are added in the state so that accurate transition probabilities can be obtained and the problem can be cast as Markov.
-In the present work, we will use the model developed in \cite{Gemine} and extend it to incorporate an RL method so that the model can be used when the transition probabilities are not known beforehand.
+In the present work, we will use the model developed in~\cite{Gemine} and extend it to incorporate an RL method so that the model can be used when the transition probabilities are not known beforehand.
