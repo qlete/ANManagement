@@ -3,6 +3,7 @@ export vect_to_ind, ind_to_vect, power_flow, cost, markovdecision
 using MAT
 using JuMP
 using CPLEX
+include("savecosts.jl")
 
 """
     vect_to_ind(vec, m, n)
@@ -157,6 +158,7 @@ function markovdecision(data)
 	print(nb_steps)
 	nb_nodes = size(pDemand)[2]
 	nb_stages = 18
+	cost_akt = zeros(2*3^3, nb_stages, nb_steps)
 	big_P = zeros(18,18)
 	P = zeros(9,9)
 	for i = 1:9
@@ -185,6 +187,7 @@ function markovdecision(data)
 					big_P = [zeros(9,9) P;zeros(9,9) zeros(9,9)]
 				end
 				cost_a = cost(a, k, t, data)
+				cost_akt[a,k,t] = cost_a
 				all_possibilities[a] = cost_a + big_P[k,:]'*V[:,t+1]
 			end
 			V[k,t] = minimum(all_possibilities)
@@ -192,12 +195,9 @@ function markovdecision(data)
 		end
 		println("Iteration t = ", t)
 	end
+	savecost(cost_akt)
 	return (V, opt_actions)
 end
-
-# include("savecosts.jl")
-# savecost(cost)
-# load with cost = loadcost()
 
 function run()
     data = matread("./data/data_4nodes.mat")
