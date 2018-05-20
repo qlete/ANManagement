@@ -3,6 +3,64 @@
 % - It would be nice to compare the performance of your reinforcement learning (RL) or Markov decision process (MDP) model to some naive baseline policies based on heuristic rules. These rules are the one you would adopt when playing yourself the game (or controlling the system).
 % Then the question is "Does RL or MDP perform better than the baseline strategy ?" Experimental simulations/comparisons should be carried out in order to answer this question.
 
+In this section, we wish to validate our model through its application on a real case problem and answer our research question detailed in section~\ref{sec:objective}.
 
+Before jumping into the experiments themselves, let us describe the dataset we used.
+We use data from a real distribution network with real generation and load profiles.
 
+Our dataset is a slightly simplified version of the data used in Niels Leemput PhD thesis \cite{Niels} which is a real urban feeder topology that was provided for the EIT-KIC InnoEnergy EVCity project \cite{evcity} to which the second author has access for his master thesis \cite{Quentin}.
+
+The system is 5 nodes distribution network made of 3 households, 1 small factory considered as a flexible load and 1 transformer node of maximum power rating of 250kV linking the distribution network to the medium voltage network.
+All households are assumed to be connected to the same phase, with a rated neutral-to-phase voltage of 230V.
+In what concerns the distances, the distance between the substation node and the first connection node is 350m.
+Then, the distance between two successive nodes is 7.2m.
+The characteristics of the lines are summarized in table \ref{tab:char_lines}.
+
+\begin{table}
+\centering
+\begin{tabular}{ |c|c|c| }
+\hline
+ Impedance $\left[\frac{\Omega}{km}\right]$ & Current limit [$A$] \\
+ \hline
+ $0.31 + \mathbf{i}0.0713$ & $210$ \\
+ \hline
+\end{tabular}
+\caption{Characteristics of the line.}
+\label{tab:char_lines}
+\end{table}
+
+\input{line_tikz}
+
+We use real single-phase household electric power consumption profiles that were sampled in 2008, with a 1 hour time resolution.
+We also have real PV power generation profiles for all these households that are based upon measurements at an installation of the KU Leuven, also with a 1 hour resolution.
+The horizon used is one week and the profiles were acquired in May.
+
+Let us now present our results for the comparison between reinforcement learning based on the Markov chain model and multi-time-steps deterministic optimization.
+
+\subsection{Assumptions}
+
+The main assumptions of the RL decision framework are the following :
+\begin{itemize}
+\item We suppose that the probability distribution for load and production curtailment is discrete.
+\item We suppose that the curtailment actions are discrete.
+\item The flexible load is either on or off, but we can't activate the flexibility of part of the load.
+\end{itemize}
+
+The assumptions of the optimization part are
+\begin{itemize}
+\item The problem is deterministic.
+\item We don't have flexible loads.
+\item Curtailment is allowed to be continuous.
+\end{itemize}
+
+Note that it would have been possible to relax the deterministic assumption of the optimization problem by using stochastic programming.
+However, stochastic programming is much less computationally efficient.
+We could also have considered flexible loads, but the problem would have become mixed-intger.
+This again, is cumbersome and would have decreased greatly the computational efficiency of the problem.
+
+Therefore, we can say that the scope of the RL framework is larger because it takes naturally uncertainty into account but the assumption that curtailment is discrete is quite strict for real case applications. 
+
+\subsection{Computational complexity}
+
+\subsection{Results}
 % section results (end)
